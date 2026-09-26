@@ -47,3 +47,10 @@
 #### Scenario: U8 No false draw or private information
 - **WHEN** 吃碰後待出牌、應對窗口、終局或查看對手
 - **THEN** 不顯示獨立摸牌；對手摸牌身分不包含在投影中
+
+### Requirement: Traditional tile artwork
+公開牌面 SHALL 使用傳統花色圖案並保留可讀牌名，所有尺寸共用一致圖案。
+
+#### Scenario: U9 Recognizable artwork
+- **WHEN** 顯示手牌、副露、棄牌、待應對牌或花牌
+- **THEN** 筒以對應數量圓圈、索以竹節且一索以鳥、萬以數字加紅萬、字牌以風字/紅中/綠發/藍框白板呈現，花牌具有植物圖案；隱藏牌仍為牌背，鍵盤出牌維持可用

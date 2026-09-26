@@ -98,3 +98,6 @@ PlayerView 新增 drawnTileId，僅在自己為 activeSeat、await-discard 且�
 | --- | --- | --- | --- |
 | 摸牌分離、留牌併入、直接打出 | U7 | tests/ui/drawn-tile.test.ts | 右側摸牌、點選出牌、桌面及手機 |
 | 補花／槓補牌與吃碰／隱藏資訊 | U7–U8 | tests/engine/drawn-tile.test.ts | 自動測試驗證投影 |
+
+### 傳統牌面設計
+Rule：所有公開牌共用本機 SVG renderer；筒為圈、索為竹節（一索為鳥），萬為黑字紅萬，白板為藍框，花牌有植物圖案。Example：九筒有九圈、二索有兩竹、紅中與綠發不同色。Question：無業務規則變更。U9 → tests/ui/tile-face.test.ts；Browser 檢查全42種、桌面/手機及出牌。參考 https://www.unicode.org/L2/L2007/07171-n3171.pdf 。自行繪製 SVG，不依賴遠端圖片或麻將符號字型。

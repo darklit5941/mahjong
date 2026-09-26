@@ -1,3 +1,4 @@
+import { tileFace } from './tile-face';
 import type { GameAction, PlayerView, Seat, TileInstance, ViewPlayer } from '../mahjong/game-types';
 import { NORMAL_TILE_CODES, tileLabel } from '../mahjong/tiles';
 const seats: Record<Seat,string> = {east:'東家',south:'南家',west:'西家',north:'北家'};
@@ -5,8 +6,7 @@ const names: Record<GameAction['kind'],string> = {discard:'出牌',chi:'吃',pon
 const escape = (s: string) => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const ordered = (tiles: TileInstance[]) => [...tiles].sort((a,b) => NORMAL_TILE_CODES.indexOf(a.code)-NORMAL_TILE_CODES.indexOf(b.code));
 function face(tile: TileInstance): string {
- const label=tileLabel(tile.code); const suit=tile.code[0];
- return `<span class="tile-face suit-${suit}">${escape(label)}</span>`;
+ return tileFace(tile.code);
 }
 function tiles(items: TileInstance[]): string { return items.map(t=>`<span class="tile">${face(t)}</span>`).join(''); }
 export function actionLabel(view: PlayerView, action: GameAction): string {

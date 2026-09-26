@@ -28,3 +28,6 @@
 ## Impact
 
 擴充 src/mahjong/；新增 src/game/ 與 src/ui/；更新 src/main.ts、src/styles.css、index.html 和 tests/。保留 Vite、TypeScript、Vitest，不加入後端、帳號、金流、儲存、多人連線或部署。使用者本次授權擴大原工作坊 non-goals 至上述單機遊戲範圍；實作時須在 AGENTS.md 與 COURSE_TASK.md 說明新階段邊界。worktree 建立、程式實作及合併均屬下一次 apply，不在此次規劃執行。
+
+### 傳統牌面視覺修正
+依使用者要求將文字牌面改為傳統萬、筒、索、字與花牌圖案，保留牌名及既有操作。

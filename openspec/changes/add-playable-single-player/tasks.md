@@ -38,3 +38,9 @@
 
 - [x] 6.1 U7/U8 失敗測試、投影與 UI 分離摸牌，出牌後併入。
 - [ ] 6.2 全套測試、build、桌面／手機 Browser Preview 與 diff review。
+
+## 7. 傳統牌面
+- [x] 7.1 U9 先失敗測試，實作共用 SVG 牌面與無障礙牌名。
+- [ ] 7.2 全測試、build、Browser 與 diff review。
+
+7.2 驗證紀錄：新增 tests/ui/tile-face.test.ts 先因 renderer 未存在失敗，再實作後全套 64 tests 通過；build 與 diff --check 通過。Preview 已啟動並開啟；CUA 因 sandbox-exec TIOCSTI 啟動失敗，桌面/手機全42種牌及鍵盤操作仍待人工目視驗收，未標示完成。
