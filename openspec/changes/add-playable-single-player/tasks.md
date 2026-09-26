@@ -33,3 +33,8 @@
 - [x] 5.4 執行npm test、npm run build、OpenSpec strict validate、git diff --check與人工diff review；確認原baseline不退步，無fixture作弊入口或後端功能。
 - [x] 5.5 Browser於320/1280px完整驗收U1–U6及罕見R/W情境，記錄控制方式、結果、console錯誤與截圖；不得以單元測試冒充畫面驗收。
 - [x] 5.6 更新tasks及verification交付檔案、Red/Green、scenario追溯、worktree提交紀錄和剩餘限制；確認整合分支可供review，不自動archive、部署或刪除worktree。
+
+## 6. 摸牌顯示修正
+
+- [x] 6.1 U7/U8 失敗測試、投影與 UI 分離摸牌，出牌後併入。
+- [ ] 6.2 全套測試、build、桌面／手機 Browser Preview 與 diff review。

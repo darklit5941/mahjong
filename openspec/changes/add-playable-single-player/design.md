@@ -89,3 +89,12 @@ Scenario測試採可構造的合法固定牌局，先檢查fixtures符合牌數�
 ## Migration Plan
 
 Apply開始先記錄並更新新階段文件，提交規劃及共用契約供工作樹共同引用。各分支通過自己的測試才交付，整合後跑npm test、npm run build、OpenSpec strict validate與Browser。保留main既有版本到整合驗收成功；需退回時還原整合提交，不抹除工作樹。此次不部署、不改遠端，Sync／Archive待使用者要求。
+
+### 摸牌顯示修正（使用者要求）
+Rule：新摸牌先獨立，出牌後才整理留下的手牌。Example：摸入二萬、打出九萬後，二萬才進入排序；直接打出二萬則不改舊手牌。Question：無待決規則。
+PlayerView 新增 drawnTileId，僅在自己為 activeSeat、await-discard 且非 claim 時投影 lastDrawnTileId；包含莊家起手最後一張。引擎手牌集合維持原狀，UI 按實體 id 分離，避免相同牌碼混淆。
+
+| Rule / Example | Scenario | Automated test | Browser / 人工 |
+| --- | --- | --- | --- |
+| 摸牌分離、留牌併入、直接打出 | U7 | tests/ui/drawn-tile.test.ts | 右側摸牌、點選出牌、桌面及手機 |
+| 補花／槓補牌與吃碰／隱藏資訊 | U7–U8 | tests/engine/drawn-tile.test.ts | 自動測試驗證投影 |

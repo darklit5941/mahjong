@@ -18,10 +18,12 @@ export function actionLabel(view: PlayerView, action: GameAction): string {
 }
 function playerMarkup(view: PlayerView, player: ViewPlayer): string {
  const own=player.seat===view.seat; const active=view.phase!=='finished'&&view.activeSeat===player.seat;
- const hand=own ? ordered(player.hand).map(tile=>{
+ const drawn=own && view.phase==='await-discard' && view.activeSeat===view.seat ? player.hand.find(t=>t.id===view.drawnTileId) : undefined;
+ const handTile=(tile: TileInstance)=>{
  const index=view.phase==='finished'?-1:view.legalActions.findIndex(a=>a.kind==='discard'&&a.tileIds.includes(tile.id));
  return index<0?`<span class="tile">${face(tile)}</span>`:`<button type="button" class="tile hand-tile" data-select="${index}" aria-label="選擇 ${escape(tileLabel(tile.code))}" aria-pressed="false">${face(tile)}</button>`;
- }).join(''):Array.from({length:player.handCount},()=>'<span class="tile tile-back" aria-hidden="true"></span>').join('');
+ };
+ const hand=own ? `<div class="tiles concealed-hand">${ordered(player.hand.filter(t=>t.id!==drawn?.id)).map(handTile).join('')}</div>${drawn?`<div class="drawn-tile" aria-label="本次摸牌">${handTile(drawn)}<span class="drawn-label">摸牌</span></div>`:''}`:Array.from({length:player.handCount},()=>'<span class="tile tile-back" aria-hidden="true"></span>').join('');
  const melds=player.melds.map(m=>`<div class="meld"><span class="meld-name">${names[m.kind]}</span><div class="tiles">${m.kind==='concealed-kong'&&!own?Array.from({length:m.count},()=>'<span class="tile tile-back" aria-hidden="true"></span>').join(''):tiles(m.tiles)}</div></div>`).join('');
  return `<article class="player-panel seat-${player.seat} ${own?'player-human':''} ${active?'is-active':''}" aria-label="${seats[player.seat]}"><header class="player-heading"><h2><span class="seat-badge">${seats[player.seat][0]}</span>${own?'你':seats[player.seat]} <small>${own?'莊家':'電腦'}</small></h2><span class="hand-count">${player.handCount} 張${active?' · 當前':''}</span></header><div class="tiles hand ${own?'human-hand':'hidden-hand'}" aria-label="${own?'你的手牌':`${player.handCount} 張暗手`}">${hand}</div>${melds?`<div class="melds" aria-label="副露">${melds}</div>`:''}<div class="flower-area"><span class="area-label">花牌</span>${player.flowers.length?`<div class="tiles">${tiles(player.flowers)}</div>`:`<span class="empty-state">${view.mode==='no-flowers'?'此模式不使用花牌':'尚無花牌'}</span>`}</div><div class="discard-area"><span class="area-label">棄牌 <b>${player.discards.length}</b></span><div class="tiles">${player.discards.length?tiles(player.discards):'<span class="empty-state">尚未出牌</span>'}</div></div></article>`;
 }

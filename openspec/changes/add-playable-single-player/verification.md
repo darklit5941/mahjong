@@ -65,3 +65,12 @@
 新增src/mahjong/game-types.ts、game.ts、win.ts；src/game/bot.ts、controller.ts；src/ui/table.ts；tests/contract、fixtures、engine、win、bots、controller、ui、integration。修改index.html、src/main.ts、src/styles.css、AGENTS.md、COURSE_TASK.md；本change規劃及驗收紀錄一併保存。
 
 仍採已確認的單機規則：簡化起手補花、五組一對、單一最近贏家、固定東家、16張保留牌，不計台分。電腦為基本策略，非高強度對手。沒有未決且阻擋交付的業務規則。未部署、未合回main、未sync/ archive；可進行後續review與歸檔。worktree保留。
+
+## 摸牌獨立顯示修正（2026-09-26）
+
+- U7 → tests/ui/drawn-tile.test.ts：按實體 id 分離新牌、直接打出新牌、打出舊牌後保留新牌並撤除摸牌區。
+- U7/U8 → tests/engine/drawn-tile.test.ts：槓後連續補花的最終補牌、自己／對手投影、吃碰來源及非出牌階段不顯示摸牌。
+- Red：新增4個測試失敗，既有58個通過；Green：62個全部通過。
+- npm ci、npm run preflight、npm run build、OpenSpec strict validate、git diff --check 皆通過；已 review diff。
+- npm run dev 在授權後啟動於 http://127.0.0.1:5173/。Browser 控制工具兩次回報 trusted Node process exited unexpectedly，故未完成實際桌面／320px手機操作與視覺驗收，6.2保持未完成。需檢查右侧摸牌間距、手機換行、選擇摸牌／舊牌並確認出牌、下一輪新摸牌。
+- 無待決業務規則；尚存風險為未經 Browser 驗證的排版與點擊呈現。未 sync／archive。

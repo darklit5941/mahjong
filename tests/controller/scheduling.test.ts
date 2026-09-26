@@ -12,7 +12,7 @@ function adapter(waitHuman = false) {
   const engine: EngineAdapter = {
     createGame: options => ({...contractState(), ...options}),
     getLegalActions: legal,
-    getPlayerView: (s, seat) => ({gameId:s.gameId, revision:s.revision, seed:s.seed, mode:s.mode, seat, phase:s.phase, activeSeat:s.activeSeat, wallRemaining:s.wall.length, players:s.players.map(p=>({...p, hand:p.seat===seat?p.hand:[], handCount:p.hand.length, melds:[]})), legalActions:legal(s,seat),pendingTile:null,pendingSourceSeat:null,result:s.result}),
+    getPlayerView: (s, seat) => ({gameId:s.gameId, revision:s.revision, seed:s.seed, mode:s.mode, seat, phase:s.phase, activeSeat:s.activeSeat, drawnTileId:null,wallRemaining:s.wall.length, players:s.players.map(p=>({...p, hand:p.seat===seat?p.hand:[], handCount:p.hand.length, melds:[]})), legalActions:legal(s,seat),pendingTile:null,pendingSourceSeat:null,result:s.result}),
     applyAction: vi.fn((s, a) => {
       if (a.gameId !== s.gameId || a.expectedRevision !== s.revision) return {ok:false, state:s, events:[], error:'stale'};
       let next = {...s, revision:s.revision+1};

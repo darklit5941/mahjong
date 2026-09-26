@@ -36,3 +36,14 @@
 #### Scenario: U6 Keyboard and mobile
 - **WHEN** 以320px及1280px視窗使用鍵盤選牌、出牌、放棄和重開
 - **THEN** 控制項可達、焦點可見，牌面不遮擋，狀態更新可讀
+
+### Requirement: Separate drawn tile
+摸牌後待出牌時，介面 SHALL 將本次摸入的實體牌獨立顯示於排序手牌右側；出牌後才將留下的牌併回手牌。補花與槓後補牌適用相同行為；吃碰後不得誤標摸牌。
+
+#### Scenario: U7 Draw and keep or discard
+- **WHEN** 真人摸入一張牌（含補花或槓後補牌）
+- **THEN** 該牌獨立顯示且可出牌；打出舊牌後，保留的新牌併入排序；直接打出新牌則舊手牌不變
+
+#### Scenario: U8 No false draw or private information
+- **WHEN** 吃碰後待出牌、應對窗口、終局或查看對手
+- **THEN** 不顯示獨立摸牌；對手摸牌身分不包含在投影中

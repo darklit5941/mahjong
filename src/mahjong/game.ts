@@ -207,7 +207,7 @@ export function applyAction(state: GameState, a: GameAction): ActionOutcome {
 }
 export function getPlayerView(s:GameState,seat:Seat):PlayerView {
   return structuredClone({
-    gameId:s.gameId,revision:s.revision,mode:s.mode,seed:s.seed,seat,phase:s.phase,activeSeat:s.activeSeat,wallRemaining:s.wall.length,players:s.players.map(p=>({
+    gameId:s.gameId,revision:s.revision,mode:s.mode,seed:s.seed,seat,phase:s.phase,activeSeat:s.activeSeat,wallRemaining:s.wall.length,drawnTileId:s.activeSeat===seat && s.phase==='await-discard' && s.turnOrigin!=='claim' ? s.lastDrawnTileId : null,players:s.players.map(p=>({
       seat:p.seat,hand:p.seat===seat?p.hand:[],handCount:p.hand.length,melds:p.melds.map(m=>({
         ...m,tiles:m.kind==='concealed-kong' && p.seat!==seat?[]:m.tiles,count:m.tiles.length
       })),flowers:p.flowers,discards:p.discards

@@ -6,5 +6,5 @@ export function contractState(): GameState {
 }
 export function contractView(): PlayerView {
   const state = contractState();
-  return { gameId: state.gameId, revision: 0, mode: state.mode, seed: 1, seat: 'east', phase: state.phase, activeSeat: 'east', wallRemaining: state.wall.length, players: state.players.map(p => ({ ...p, melds: [], hand: p.seat === 'east' ? p.hand : [], handCount: p.hand.length })), legalActions: state.players[0].hand.map(tile => ({ gameId: state.gameId, expectedRevision: 0, seat: 'east', kind: 'discard', tileIds: [tile.id] })), pendingTile: null, pendingSourceSeat: null, result: null };
+  return { gameId: state.gameId, revision: 0, mode: state.mode, seed: 1, seat: 'east', phase: state.phase, activeSeat: 'east', drawnTileId:null,wallRemaining: state.wall.length, players: state.players.map(p => ({ ...p, melds: [], hand: p.seat === 'east' ? p.hand : [], handCount: p.hand.length })), legalActions: state.players[0].hand.map(tile => ({ gameId: state.gameId, expectedRevision: 0, seat: 'east', kind: 'discard', tileIds: [tile.id] })), pendingTile: null, pendingSourceSeat: null, result: null };
 }

@@ -14,7 +14,7 @@ export type GamePhase = 'await-discard' | 'await-responses' | 'await-kong-respon
 export interface GameState { gameId: string; revision: number; mode: RuleMode; seed: number; phase: GamePhase; activeSeat: Seat; wall: TileInstance[]; players: GamePlayer[]; pendingWindow: ResponseWindow | null; result: GameResult | null; lastDrawnTileId: string | null; turnOrigin: 'initial' | 'draw' | 'claim'; }
 export interface ViewMeld { kind: MeldKind; tiles: TileInstance[]; count: number; sourceSeat?: Seat }
 export interface ViewPlayer { seat: Seat; hand: TileInstance[]; handCount: number; melds: ViewMeld[]; flowers: TileInstance[]; discards: TileInstance[] }
-export interface PlayerView { gameId: string; revision: number; mode: RuleMode; seed: number; seat: Seat; phase: GamePhase; activeSeat: Seat; wallRemaining: number; players: ViewPlayer[]; legalActions: GameAction[]; pendingTile: TileInstance | null; pendingSourceSeat: Seat | null; result: GameResult | null; }
+export interface PlayerView { gameId: string; revision: number; mode: RuleMode; seed: number; seat: Seat; phase: GamePhase; activeSeat: Seat; wallRemaining: number; drawnTileId: string | null; players: ViewPlayer[]; legalActions: GameAction[]; pendingTile: TileInstance | null; pendingSourceSeat: Seat | null; result: GameResult | null; }
 export interface GameEvent { type: string; seat?: Seat; message: string }
 export interface ActionOutcome { ok: boolean; state: GameState; events: GameEvent[]; error?: string }
 export interface GameOptions { seed: number; mode: RuleMode; gameId: string }
