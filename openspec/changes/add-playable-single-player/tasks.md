@@ -44,3 +44,41 @@
 - [ ] 7.2 全測試、build、Browser 與 diff review。
 
 7.2 驗證紀錄：新增 tests/ui/tile-face.test.ts 先因 renderer 未存在失敗，再實作後全套 64 tests 通過；build 與 diff --check 通過。Preview 已啟動並開啟；CUA 因 sandbox-exec TIOCSTI 啟動失敗，桌面/手機全42種牌及鍵盤操作仍待人工目視驗收，未標示完成。
+
+## 8. 自動 Seed
+- [x] 8.1 U4 碰撞與邊界失敗測試，再實作自動 Seed 與唯讀 UI。
+- [ ] 8.2 全套測試、build、Browser Preview 與 diff review。
+
+8.2 驗證紀錄：U4 新增兩項測試先因模組不存在失敗，實作後全套 67 tests 通過；npm run build、npm run preflight、git diff --check 通過，diff 已檢視並保留原有 analytics 變更。Preview http://127.0.0.1:5173/ 已啟動，CUA 因 sandbox-exec TIOCSTI 錯誤無法使用；尚待人工檢查桌面／手機唯讀 Seed，以及重開／模式切換／終局再玩取得新 Seed。無待決業務規則。
+
+## 9. 七筒牌面
+- [x] 9.1 U10 先失敗測試，再修正 D7 專屬座標並更新總覽。
+- [ ] 9.2 全測試、build、diff review 及 Browser 檢查。
+
+9.2：U10 測試先因三筒同高失敗，修正後 68 tests、build、diff --check 通過，diff 確認僅 D7 使用新座標。總覽已更新；Browser 工具先前因 sandbox-exec TIOCSTI 故障，目視驗收仍待使用者確認。
+
+## 10. 八筒配色
+- [x] 10.1 U11 先失敗測試，再修正 D8 配色及總覽，執行測試與 build。
+- [ ] 10.2 Browser 目視確認配色。
+
+10.1：U11 先紅後綠，70 tests、build、diff --check 通過；diff 檢視確認只排除 D8 的紅色條件，D7/D9 配色不變。總覽同步更新。10.2：Browser 工具環境故障，已提供 Preview，目視待使用者確認。
+
+## 11. 八條造型
+- [x] 11.1 U12 先失敗測試，再修正 B8 與總覽，測試、build 及 diff review。
+- [ ] 11.2 Browser 目視確認。
+
+11.1：U12 先紅後綠，71 tests、build、diff --check 通過；檢查變更只影響 B8 專屬座標與角度。總覽同步更新。Browser 工具環境故障，目視效果待使用者確認。
+
+11.1 參考圖修訂：已實際讀取使用者指定 Wikimedia 縮圖，確認外側直立、內側斜接。U12 更新舊錯誤假設後先失敗，再修正專用 B8 renderer，71 tests 與 build 通過；diff 檢查通過。重新嘗試 Browser 仍因 TIOCSTI 環境錯誤失敗，11.2 保留待目視驗收。
+
+## 12. 七條參考圖
+- [x] 12.1 U13 先失敗測試，再修正 B7、總覽並執行測試、build 與 diff review。
+- [ ] 12.2 Browser 目視確認。
+
+12.1：已查看指定參考圖，U13 先紅後綠，72 tests、build、diff --check 通過；檢視 B7 專屬分支與 B8 共用造型函式，B8 輸出不變。總覽 B7 已更新。Browser 工具因既有 TIOCSTI 環境故障仍待人工目視驗收。
+
+## 13. 八張花牌
+- [x] 13.1 U14 先失敗測試，再導入清理後 SVG、來源授權資訊及總覽。
+- [ ] 13.2 全測試、build、diff review 與 Browser 目視驗收。
+
+13.2：U14 先紅後綠，73 tests、build、diff --check 通過；八張素材的 path/style/transform 與已目視參考逐一核對一致，竹菊對應正確，來源授權頁已加入。總覽同步更新。Browser 工具既有 TIOCSTI 環境故障，實際牌桌／總覽目視待人工確認。

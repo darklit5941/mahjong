@@ -16,15 +16,15 @@
 - **THEN** 提供兩組牌面選項與放棄，選定後只送出一次宣告；其他不合法動作不可用
 
 ### Requirement: Restart and feedback
-介面 SHALL 保留 seed 與有花開關；有效輸入切換立即重開，取消舊互動；無效 seed 不破壞現局並恢復開關。終局 SHALL 明確顯示結果與再玩一局入口。
+介面 SHALL 保留唯讀 Seed 顯示與有花開關；每次開局自動產生正整數 uint32 Seed，同一頁面遊玩期間不得重複。切換立即重開，取消舊互動。終局 SHALL 明確顯示結果與再玩一局入口。
 
 #### Scenario: U3 Restart
 - **WHEN** 電腦思考或真人應對時切換有效模式
 - **THEN** 清除舊選牌與排程，以新模式及 seed 開局，東家先出牌
 
-#### Scenario: U4 Invalid seed
-- **WHEN** 輸入空白、0或1.5並切換
-- **THEN** 保留舊牌局，恢復原開關並顯示錯誤
+#### Scenario: U4 Automatic seed
+- **WHEN** 首次載入、開始新牌局、切換模式或終局再玩
+- **THEN** 自動產生新的 Seed 並僅顯示於狀態列，不提供輸入；即使亂數碰撞也不得重用同頁面已用 Seed
 
 #### Scenario: U5 Result screen
 - **WHEN** 一局自摸、放槍、搶槓胡或流局
@@ -54,3 +54,23 @@
 #### Scenario: U9 Recognizable artwork
 - **WHEN** 顯示手牌、副露、棄牌、待應對牌或花牌
 - **THEN** 筒以對應數量圓圈、索以竹節且一索以鳥、萬以數字加紅萬、字牌以風字/紅中/綠發/藍框白板呈現，花牌具有植物圖案；隱藏牌仍為牌背，鍵盤出牌維持可用
+
+#### Scenario: U10 Seven dots layout
+- **WHEN** 顯示七筒 D7
+- **THEN** 上方三顆紅筒由左上至右下斜排，下方四顆藍筒呈方形排列，七索不受影響
+
+#### Scenario: U11 Eight dots colors
+- **WHEN** 顯示八筒 D8
+- **THEN** 八顆圓筒均為深藍色，兩欄四列排列維持不變
+
+#### Scenario: U12 Eight bamboo layout
+- **WHEN** 顯示八條 B8
+- **THEN** 八根綠色竹節分上下兩組，各四根，每組左右外側直立，中間兩根斜接：上組 ∧、下組 ∨
+
+#### Scenario: U13 Seven bamboo reference layout
+- **WHEN** 顯示七條 B7
+- **THEN** 上方中央一根紅色直立竹節，下方兩排各三根綠色直立竹節，形成 1＋3＋3 排列
+
+#### Scenario: U14 Reference flower artwork
+- **WHEN** 顯示春夏秋冬梅蘭竹菊
+- **THEN** 使用指定參考 SVG 的配色、植物圖案與書法字，等比例顯示；F7 為竹、F8 為菊，素材隨程式本機打包，保留可讀牌名並提供來源授權資訊

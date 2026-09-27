@@ -43,7 +43,7 @@ Controller 擁有唯一狀態，依序套用電腦回覆；真人有待回覆時
 
 ### 4. 畫面
 
-UI worktree 擁有 src/ui/table.ts、src/styles.css、index.html；只用 PlayerView 和 callback。用原生 button 提供牌張與動作選擇，多組吃牌以明確三張牌標籤顯示。真人固定下方東家；其他暗手為牌背。手機以可換行區塊呈現，不強塞橫向桌面配置。用 state 顯示輪次／等待及結果；不加倒數自動放棄。重開及切換沿用目前立即重開行為，無效 seed 保留現局。整合者獨占 main.ts，串接 UI/controller/engine。
+UI worktree 擁有 src/ui/table.ts、src/styles.css、index.html；只用 PlayerView 和 callback。用原生 button 提供牌張與動作選擇，多組吃牌以明確三張牌標籤顯示。真人固定下方東家；其他暗手為牌背。手機以可換行區塊呈現，不強塞橫向桌面配置。用 state 顯示輪次／等待及結果；不加倒數自動放棄。重開及切換立即以新 Seed 開局，Seed 僅供顯示。整合者獨占 main.ts，串接 UI/controller/engine。
 
 ### 5. Worktree 分工與依賴
 
@@ -73,7 +73,7 @@ Story：真人能與三位電腦完成一局，並可重新開始。使用者已
 | 胡牌與結果 | W1–W5 | win/standard.test.ts、engine/results.test.ts | 自摸／放槍／搶槓／流局結果 |
 | Bot合法與資訊隔離 | B1–B2 | bots/policy.test.ts | 不以畫面證明隱藏邏輯 |
 | 排程等待與取消 | B3–B4 | controller/scheduling.test.ts（fake timers） | 等真人應對、思考中重開 |
-| 桌面與手機完整操作 | U1–U6 | ui投影檢查與整合Browser案例 | 320/1280px、鍵盤、牌背DOM、錯誤seed |
+| 桌面與手機完整操作 | U1–U6 | ui投影檢查與整合Browser案例 | 320/1280px、鍵盤、牌背DOM、自動seed |
 
 Scenario測試採可構造的合法固定牌局，先檢查fixtures符合牌數限制；罕見搶槓／補花邊界不能靠隨機seed碰運氣。最後增加兩模式固定seed自動完整對局，確認有限步內終局；測試步數上限只作死循環偵測，不替代真實流局規則。正式入口不得包含任意作弊fixture按鈕。
 
@@ -101,3 +101,21 @@ PlayerView 新增 drawnTileId，僅在自己為 activeSeat、await-discard 且�
 
 ### 傳統牌面設計
 Rule：所有公開牌共用本機 SVG renderer；筒為圈、索為竹節（一索為鳥），萬為黑字紅萬，白板為藍框，花牌有植物圖案。Example：九筒有九圈、二索有兩竹、紅中與綠發不同色。Question：無業務規則變更。U9 → tests/ui/tile-face.test.ts；Browser 檢查全42種、桌面/手機及出牌。參考 https://www.unicode.org/L2/L2007/07171-n3171.pdf 。自行繪製 SVG，不依賴遠端圖片或麻將符號字型。
+
+### 自動 Seed
+Rule：每個開局入口皆產生新 Seed，UI 僅顯示。Example：連續重開或切換模式，Seed 不重複；亂數連續回傳同值亦不重複。Question：無待決麻將規則。使用 crypto.getRandomValues 產生 uint32，Set 記錄同頁面已用值，碰撞時循環尋找未用正值；不更動既有洗牌演算法與固定 Seed 重現契約。跨頁面重新載入使用新亂數，不保證跨裝置／清除瀏覽資料後全球唯一。U4 → tests/controller/round-seed.test.ts；所有開局入口與唯讀顯示 → Browser。
+
+### 七筒牌面修正
+Rule：D7 上三紅筒斜排、下四藍筒方排。Example：由左上至右下三顆紅筒，下方為兩列兩行藍筒；B7 不變。Question：無麻將規則變更。D7 使用專屬座標，避免更動共用 positions 影響七索。U10 → tests/ui/tile-face.test.ts；Browser → artifacts/tile-gallery.html 七筒放大及原尺寸。
+
+D7 間距微調：上斜排與下方形之間保留空隙，圓圈外框間至少 5 SVG 單位，縮小至半徑 5.5；U10 增加外框間距測試，總覽同步更新。
+
+D8 配色：八顆圓筒統一 ink 深藍色，座標與尺寸不變。U11 → tests/ui/tile-face.test.ts；Browser → 總覽八筒。無待決規則。
+
+B8：專屬八根竹節座標，四根一組，外側直立、上組中央 ∧、下組中央 ∨，保留綠色與可讀牌名。U12 → tests/ui/tile-face.test.ts；Browser → 總覽放大與實際尺寸。無待決業務規則。
+
+B8 依使用者指定參考 https://zh.wikipedia.org/wiki/File:0308八條.svg 修正：外側直立、內側斜接，竹節有加粗橢圓端點及中央節點。使用自行撰寫的 SVG 幾何描繪排列，不複製來源 SVG path。U12 測試改為驗證參考圖的外直內斜，取代先前錯誤的全斜假設。
+
+B7 Rule：1＋3＋3 全直立竹節，上中紅、下六綠。Example：第一排僅中央紅條，下兩排各三根綠條。Question：無。U13 → tests/ui/tile-face.test.ts；Browser → 總覽 B7 放大／實際尺寸。已查看使用者指定 https://zh.wikipedia.org/wiki/File:0307七條.svg 縮圖；使用自行撰寫幾何，不複製來源 path，竹節造型與 B8 共用。
+
+U14：八張花牌使用使用者指定的 Wikimedia SVG，保留原圖配色、書法字與植物輪廓。移除編輯器 metadata、id，僅保留 g/path 的繪圖屬性，等比例嵌入共同牌框；本機 raw import，無遠端圖片依賴。F1–F8 明確映射春夏秋冬梅蘭竹菊；F7 對應 0508竹、F8 對應 0507菊。Rule／Example：八張獨立圖案、竹菊不對調、可讀名稱不变。Question：無。U14 → tests/ui/tile-face.test.ts；Browser → 總覽。public/artwork-credits.html 提供作者碧海风、每張來源、CC BY-SA 4.0 與修改說明；遊戲頁尾及總覽提供連結。

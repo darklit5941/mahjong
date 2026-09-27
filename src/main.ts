@@ -1,6 +1,7 @@
 import './styles.css';
 import { createGame, applyAction, getLegalActions, getPlayerView } from './mahjong/game';
 import { createGameController } from './game/controller';
+import { createRoundSeedGenerator } from './game/round-seed';
 import { renderTable } from './ui/table';
 import type { PlayerView, Seat } from './mahjong/game-types';
 
@@ -11,7 +12,7 @@ function requireElement<T extends Element>(selector: string): T {
 }
 
 const form = requireElement<HTMLFormElement>('#round-form');
-const seedInput = requireElement<HTMLInputElement>('#seed');
+const nextRoundSeed = createRoundSeedGenerator();
 const flowerSwitch = requireElement<HTMLInputElement>('#use-flowers');
 const message = requireElement<HTMLElement>('#message');
 const ruleMode = requireElement<HTMLElement>('#rule-mode');
@@ -53,14 +54,7 @@ const controller = createGameController({
 });
 
 function startRound(): void {
-  const seed = seedInput.valueAsNumber;
-  if (!Number.isFinite(seed) || !Number.isInteger(seed) || seed < 1) {
-    showError('Seed 必須是大於 0 的整數。');
-    seedInput.setAttribute('aria-invalid', 'true');
-    flowerSwitch.checked = controller.getView()?.mode !== 'no-flowers';
-    return;
-  }
-  seedInput.removeAttribute('aria-invalid');
+  const seed = nextRoundSeed();
   controller.start({ seed, mode: flowerSwitch.checked ? 'flowers' : 'no-flowers', gameId: `game-${++gameNumber}` });
 }
 form.addEventListener('submit', event => { event.preventDefault(); startRound(); });
