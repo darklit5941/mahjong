@@ -1,0 +1,4 @@
+- [x] 確認使用者代碼、範圍、Rule / Example / Question。
+- [x] 先失敗測試，再加入 Google tag。
+- [ ] 測試、build、Browser Preview 與 diff review。
+- [ ] 確認部署目的地，發佈並驗證公開頁面。
